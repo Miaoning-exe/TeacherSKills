@@ -1,0 +1,174 @@
+[
+  {
+    "id": "sample_math_choice_01",
+    "content": "已知二次函数 $y=x^2-4x+3$，下列说法正确的是哪一项？",
+    "subject": "数学",
+    "question_type": "选择题",
+    "difficulty": "易",
+    "knowledge_points": ["math_quad_graph", "math_quad_vertex"],
+    "answer": "A",
+    "explanation": "二次项系数大于 0，抛物线开口向上，且顶点坐标为 $(2,-1)$。",
+    "score": 3,
+    "options": [
+      "A. 抛物线开口向上",
+      "B. 顶点坐标是 $(2,1)$",
+      "C. 与 $x$ 轴只有一个交点",
+      "D. 对称轴是 $x=-2$"
+    ],
+    "material": null,
+    "sub_questions": null,
+    "source": "TeacherSkills sample",
+    "metadata": {
+      "grade": "九年级"
+    }
+  },
+  {
+    "id": "sample_math_fill_01",
+    "content": "将二次函数 $y=x^2-6x+5$ 配方后可写成 $y=(x-\\underline{\\quad})^2-4$。",
+    "subject": "数学",
+    "question_type": "填空题",
+    "difficulty": "中",
+    "knowledge_points": ["math_quad_vertex"],
+    "answer": "3",
+    "explanation": "因为 $x^2-6x+5=(x-3)^2-4$。",
+    "score": 4,
+    "options": null,
+    "material": null,
+    "sub_questions": null,
+    "source": "TeacherSkills sample",
+    "metadata": {
+      "grade": "九年级"
+    }
+  },
+  {
+    "id": "sample_math_app_01",
+    "content": "某商品每天销售利润 $y$（元）与售价调整量 $x$（元）的关系为 $y=-2x^2+12x+20$。求该商品每天销售利润的最大值。",
+    "subject": "数学",
+    "question_type": "应用题",
+    "difficulty": "难",
+    "knowledge_points": ["math_quad_graph", "math_quad_vertex"],
+    "answer": "当 $x=3$ 时，最大利润为 38 元。",
+    "explanation": "利用顶点公式 $x=-\\frac{b}{2a}=3$，代入得 $y=38$。",
+    "score": 10,
+    "options": null,
+    "material": null,
+    "sub_questions": null,
+    "source": "TeacherSkills sample",
+    "metadata": {
+      "grade": "九年级"
+    }
+  },
+  {
+    "id": "sample_cn_read_01",
+    "content": "阅读材料，概括作者回忆校园银杏树的主要情感。",
+    "subject": "语文",
+    "question_type": "阅读理解",
+    "difficulty": "中",
+    "knowledge_points": ["cn_reading_theme", "cn_reading_expression"],
+    "answer": "表达了作者对校园生活的怀念，以及对师生情谊的珍视。",
+    "explanation": "可从“每次落叶都像一封旧信”“总想再走一遍那条小路”等语句概括情感。",
+    "score": 6,
+    "options": null,
+    "material": "秋风起时，校园里的银杏树总是最先变黄。下课铃一响，我们就跑到树下捡叶子，把最完整的一片夹进课本里。多年后回想起来，那些叶子像一封封没有寄出的信，提醒我曾经拥有过的明亮时光。",
+    "sub_questions": null,
+    "source": "TeacherSkills sample",
+    "metadata": {
+      "grade": "八年级"
+    }
+  },
+  {
+    "id": "sample_cn_poetry_01",
+    "content": "赏析“潮平两岸阔，风正一帆悬”中“阔”字的表达效果。",
+    "subject": "语文",
+    "question_type": "古诗词",
+    "difficulty": "中",
+    "knowledge_points": ["cn_poetry_image"],
+    "answer": "“阔”字写出江面开阔、视野舒展的景象，烘托出诗人昂扬开阔的心境。",
+    "explanation": "赏析时应结合景物特点和诗人情感两个层面作答。",
+    "score": 4,
+    "options": null,
+    "material": null,
+    "sub_questions": null,
+    "source": "TeacherSkills sample",
+    "metadata": {
+      "grade": "九年级"
+    }
+  },
+  {
+    "id": "sample_cn_essay_01",
+    "content": "请以“这一次，我选择坚持”为题，写一篇不少于 600 字的记叙文。",
+    "subject": "语文",
+    "question_type": "作文",
+    "difficulty": "难",
+    "knowledge_points": ["cn_writing_narrative"],
+    "answer": "评分参考：立意明确，内容具体，结构完整，语言通顺，能体现“坚持”带来的变化与成长。",
+    "explanation": "作文题答案以评分要点呈现，重点关注立意、选材、结构与语言。",
+    "score": 30,
+    "options": null,
+    "material": null,
+    "sub_questions": null,
+    "source": "TeacherSkills sample",
+    "metadata": {
+      "grade": "九年级"
+    }
+  },
+  {
+    "id": "sample_en_cloze_01",
+    "content": "Choose the best word for the blank: Many students keep a reading diary because it helps them ____ what they have learned.",
+    "subject": "英语",
+    "question_type": "完形填空",
+    "difficulty": "中",
+    "knowledge_points": ["en_cloze_context", "en_reading_detail"],
+    "answer": "B",
+    "explanation": "Review means to look at something again in order to remember it better, which fits the context.",
+    "score": 2,
+    "options": [
+      "A. forget",
+      "B. review",
+      "C. borrow",
+      "D. hide"
+    ],
+    "material": "Linda writes down key sentences after reading. She believes a reading diary is a simple way to improve understanding and memory.",
+    "sub_questions": null,
+    "source": "TeacherSkills sample",
+    "metadata": {
+      "grade": "九年级"
+    }
+  },
+  {
+    "id": "sample_en_grammar_01",
+    "content": "Fill in the blank with the correct form: The boy enjoys ____ (collect) useful expressions from English stories.",
+    "subject": "英语",
+    "question_type": "语法填空",
+    "difficulty": "易",
+    "knowledge_points": ["en_grammar_gerund"],
+    "answer": "collecting",
+    "explanation": "Enjoy is followed by a gerund, so the correct form is collecting.",
+    "score": 2,
+    "options": null,
+    "material": null,
+    "sub_questions": null,
+    "source": "TeacherSkills sample",
+    "metadata": {
+      "grade": "八年级"
+    }
+  },
+  {
+    "id": "sample_en_write_01",
+    "content": "Write an 80-word passage about whether middle school students should join reading clubs.",
+    "subject": "英语",
+    "question_type": "书面表达",
+    "difficulty": "难",
+    "knowledge_points": ["en_writing_opinion"],
+    "answer": "Scoring guide: clear opinion, at least two supporting reasons, coherent structure, and mostly correct grammar.",
+    "explanation": "Writing tasks are evaluated with a rubric instead of one fixed answer.",
+    "score": 15,
+    "options": null,
+    "material": null,
+    "sub_questions": null,
+    "source": "TeacherSkills sample",
+    "metadata": {
+      "grade": "九年级"
+    }
+  }
+]

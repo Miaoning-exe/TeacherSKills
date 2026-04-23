@@ -1,0 +1,42 @@
+[
+  {
+    "id": "cn_reading_theme",
+    "name": "记叙文中心概括",
+    "subject": "语文",
+    "grade": "八年级",
+    "chapter": "现代文阅读",
+    "parent_id": null,
+    "cognitive_level": "理解",
+    "curriculum_standard_ref": "C-8-READ-02"
+  },
+  {
+    "id": "cn_reading_expression",
+    "name": "句子表达效果赏析",
+    "subject": "语文",
+    "grade": "八年级",
+    "chapter": "现代文阅读",
+    "parent_id": "cn_reading_theme",
+    "cognitive_level": "分析",
+    "curriculum_standard_ref": "C-8-READ-04"
+  },
+  {
+    "id": "cn_poetry_image",
+    "name": "古诗词意象与情感",
+    "subject": "语文",
+    "grade": "九年级",
+    "chapter": "古诗词阅读",
+    "parent_id": null,
+    "cognitive_level": "分析",
+    "curriculum_standard_ref": "C-9-POETRY-01"
+  },
+  {
+    "id": "cn_writing_narrative",
+    "name": "记叙文写作",
+    "subject": "语文",
+    "grade": "九年级",
+    "chapter": "写作",
+    "parent_id": null,
+    "cognitive_level": "创造",
+    "curriculum_standard_ref": "C-9-WRITE-02"
+  }
+]

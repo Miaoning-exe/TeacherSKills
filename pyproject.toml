@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "teacherskills"
+version = "0.1.0"
+description = "面向中国小初高教师的 AI 工具集（Claude Code Skill 格式）"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = [
+    "pydantic>=2.0",
+    "httpx>=0.26",
+]
+
+[project.optional-dependencies]
+export = ["python-docx>=1.1"]
+visualization = ["matplotlib>=3.8"]
+dev = ["pytest>=8.0", "pytest-cov"]
+
+[project.scripts]
+teacherskills-mcp = "mcp_server.stdio_server:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["shared*", "mcp_server*"]

@@ -1,0 +1,2 @@
+"""TeacherSkills MCP server package."""
+

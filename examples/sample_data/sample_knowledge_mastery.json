@@ -1,0 +1,50 @@
+[
+  {
+    "student_id": "stu_001",
+    "knowledge_point_id": "math_quad_graph",
+    "mastery_level": 1.0,
+    "confidence": 0.7
+  },
+  {
+    "student_id": "stu_001",
+    "knowledge_point_id": "math_quad_vertex",
+    "mastery_level": 1.0,
+    "confidence": 0.9
+  },
+  {
+    "student_id": "stu_001",
+    "knowledge_point_id": "math_factorization",
+    "mastery_level": 0.5,
+    "confidence": 0.1
+  },
+  {
+    "student_id": "stu_001",
+    "knowledge_point_id": "math_linear_model",
+    "mastery_level": 0.5,
+    "confidence": 0.1
+  },
+  {
+    "student_id": "stu_002",
+    "knowledge_point_id": "math_quad_graph",
+    "mastery_level": 0.5,
+    "confidence": 0.1
+  },
+  {
+    "student_id": "stu_002",
+    "knowledge_point_id": "math_quad_vertex",
+    "mastery_level": 0.5,
+    "confidence": 0.1
+  },
+  {
+    "student_id": "stu_002",
+    "knowledge_point_id": "math_factorization",
+    "mastery_level": 0.5,
+    "confidence": 0.1
+  },
+  {
+    "student_id": "stu_002",
+    "knowledge_point_id": "math_linear_model",
+    "mastery_level": 0.5,
+    "confidence": 0.1
+  }
+]

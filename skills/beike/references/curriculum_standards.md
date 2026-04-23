@@ -1,0 +1,212 @@
+# 课程标准参考
+
+以下内容为本地结构化课标摘录，供 `beike` Skill 做离线匹配与教学建议生成。
+
+## 数学-九年级-二次函数
+- subject: 数学
+- grade: 九年级
+- topic: 二次函数
+- standard_id: M-9-ALG-02
+- standard_summary: 理解二次函数的意义，能结合图像分析性质，并用函数观点解决简单实际问题。
+- knowledge_points:
+  - 二次函数的概念与表达式
+  - 图像的开口方向、对称轴与顶点
+  - 解析式与图像之间的对应关系
+  - 二次函数的增减性与最值
+- core_competencies:
+  - 数形结合
+  - 模型建构
+  - 逻辑推理
+- misconceptions:
+  - 将一次函数图像特征套用到抛物线
+  - 顶点坐标与对称轴关系混淆
+  - 只会代数计算，不会借助图像判断性质
+- teaching_strategies:
+  - 先用生活情境引入抛物线，再回到解析式抽象概括
+  - 通过图像软件或列表描点帮助学生建立数形对应
+  - 用变式题比较不同参数对图像的影响
+- activity_suggestions:
+  - 顶点与开口方向快速判断卡片活动
+  - 小组合作完成参数变化与图像变化配对
+  - 用真实情境建模最值问题
+- assessment_suggestions:
+  - 课堂快测图像识别
+  - 参数变化口头解释
+  - 最值问题书面练习
+- bloom_levels:
+  - 理解
+  - 应用
+  - 分析
+
+## 数学-八年级-一次函数
+- subject: 数学
+- grade: 八年级
+- topic: 一次函数
+- standard_id: M-8-ALG-01
+- standard_summary: 理解变量关系和一次函数的意义，能从图像与解析式两个角度分析变化趋势。
+- knowledge_points:
+  - 变量与函数关系
+  - 一次函数解析式
+  - 图像与斜率的意义
+  - 实际情境中的线性关系
+- core_competencies:
+  - 抽象概括
+  - 数学建模
+- misconceptions:
+  - 不能区分正比例函数与一次函数
+  - 只记忆斜率公式，不理解变化率
+- teaching_strategies:
+  - 从表格和实际情境过渡到函数解析式
+  - 用多表示法对照巩固概念
+- activity_suggestions:
+  - 价格与数量关系建模
+  - 图像上找斜率与截距
+- assessment_suggestions:
+  - 情境题解释斜率意义
+  - 图像判读小测
+- bloom_levels:
+  - 理解
+  - 应用
+
+## 语文-七年级-记叙文阅读
+- subject: 语文
+- grade: 七年级
+- topic: 记叙文阅读
+- standard_id: C-7-READ-01
+- standard_summary: 能整体把握文章内容，理清叙事线索，体会人物形象与思想感情。
+- knowledge_points:
+  - 概括主要内容
+  - 梳理叙事线索
+  - 分析人物形象
+  - 体会关键语句的表达作用
+- core_competencies:
+  - 语言建构
+  - 审美鉴赏
+  - 思维发展
+- misconceptions:
+  - 只摘抄原句，不会概括主旨
+  - 人物形象分析停留在标签化评价
+  - 忽略细节描写的作用
+- teaching_strategies:
+  - 通过问题链引导学生逐步概括内容和情感
+  - 借助批注示范细节描写分析方法
+  - 设计人物证据卡片促进文本证据表达
+- activity_suggestions:
+  - 情节排序
+  - 人物证据卡分享
+  - 关键句改写与比较
+- assessment_suggestions:
+  - 主题概括口头表达
+  - 细节作用简答题
+  - 阅读批注展示
+- bloom_levels:
+  - 理解
+  - 分析
+  - 评价
+
+## 语文-九年级-文言文阅读
+- subject: 语文
+- grade: 九年级
+- topic: 文言文阅读
+- standard_id: C-9-READ-03
+- standard_summary: 能借助注释和语境理解常见文言词句，整体把握内容并评价人物、观点或写法。
+- knowledge_points:
+  - 常见文言实词虚词
+  - 句子翻译
+  - 内容理解
+  - 观点与写法分析
+- core_competencies:
+  - 文化传承
+  - 语言建构
+  - 思辨能力
+- misconceptions:
+  - 逐字硬译导致句意不通
+  - 忽略上下文推断词义
+  - 观点分析脱离文本依据
+- teaching_strategies:
+  - 先疏通词句，再统整段意
+  - 比较不同人物言行凸显中心
+  - 用文本证据支撑评价表达
+- activity_suggestions:
+  - 关键词义推断
+  - 句式翻译互评
+  - 观点辩论
+- assessment_suggestions:
+  - 重点词句快测
+  - 段意概括
+  - 观点分析简答
+- bloom_levels:
+  - 理解
+  - 分析
+  - 评价
+
+## 英语-七年级-一般现在时
+- subject: 英语
+- grade: 七年级
+- topic: 一般现在时
+- standard_id: E-7-GRA-01
+- standard_summary: 能在熟悉语境中正确表达经常性、习惯性动作和客观事实，并理解主谓一致的基本规则。
+- knowledge_points:
+  - 一般现在时基本结构
+  - 第三人称单数变化
+  - 频率副词位置
+  - 一般疑问句与否定句
+- core_competencies:
+  - 语言运用
+  - 语法意识
+- misconceptions:
+  - 第三人称单数漏加 s
+  - do 和 does 混用
+  - 频率副词位置错误
+- teaching_strategies:
+  - 从日常作息表达切入时态功能
+  - 用句型操练和对比帮助固化规则
+  - 将机械操练过渡到真实表达任务
+- activity_suggestions:
+  - My Day 信息卡配对
+  - 错句改正竞赛
+  - 采访同伴日常习惯
+- assessment_suggestions:
+  - 句型转换练习
+  - 口头问答
+  - 小作文描述日常生活
+- bloom_levels:
+  - 识记
+  - 理解
+  - 应用
+
+## 英语-九年级-阅读理解策略
+- subject: 英语
+- grade: 九年级
+- topic: 阅读理解策略
+- standard_id: E-9-READ-02
+- standard_summary: 能根据不同阅读任务运用略读、寻读、推断和概括等策略，提高信息获取与语篇理解能力。
+- knowledge_points:
+  - 略读获取主旨
+  - 寻读定位信息
+  - 根据上下文推断词义
+  - 概括段落大意
+- core_competencies:
+  - 语篇理解
+  - 思维品质
+  - 学习能力
+- misconceptions:
+  - 逐词翻译影响整体理解
+  - 定位信息不准确
+  - 推断题缺少语境依据
+- teaching_strategies:
+  - 分任务示范不同阅读策略
+  - 用限时训练强化略读与寻读
+  - 引导学生总结答题步骤
+- activity_suggestions:
+  - 标题配对
+  - 关键词定位比赛
+  - 推断依据圈画
+- assessment_suggestions:
+  - 限时阅读任务
+  - 段落大意匹配
+  - 推断题思路说明
+- bloom_levels:
+  - 理解
+  - 应用
+  - 分析

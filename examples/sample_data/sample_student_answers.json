@@ -1,0 +1,32 @@
+[
+  {
+    "student_id": "stu_001",
+    "question_id": "sample_math_choice_01",
+    "answer": "A"
+  },
+  {
+    "student_id": "stu_001",
+    "question_id": "sample_math_fill_01",
+    "answer": "3"
+  },
+  {
+    "student_id": "stu_001",
+    "question_id": "sample_math_app_01",
+    "answer": "先求顶点，再代入函数，得到最大利润是 38 元。"
+  },
+  {
+    "student_id": "stu_002",
+    "question_id": "sample_cn_read_01",
+    "answer": "作者怀念校园生活，也怀念那段单纯美好的时光。"
+  },
+  {
+    "student_id": "stu_002",
+    "question_id": "sample_en_grammar_01",
+    "answer": "collecting"
+  },
+  {
+    "student_id": "stu_002",
+    "question_id": "sample_en_write_01",
+    "answer": "I think middle school students should join reading clubs because they can share ideas and learn new words from each other."
+  }
+]

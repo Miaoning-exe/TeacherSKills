@@ -1,0 +1,42 @@
+[
+  {
+    "id": "en_reading_detail",
+    "name": "阅读细节理解",
+    "subject": "英语",
+    "grade": "八年级",
+    "chapter": "阅读",
+    "parent_id": null,
+    "cognitive_level": "理解",
+    "curriculum_standard_ref": "E-8-READ-01"
+  },
+  {
+    "id": "en_grammar_gerund",
+    "name": "动名词作宾语",
+    "subject": "英语",
+    "grade": "八年级",
+    "chapter": "语法",
+    "parent_id": null,
+    "cognitive_level": "应用",
+    "curriculum_standard_ref": "E-8-GRAM-03"
+  },
+  {
+    "id": "en_cloze_context",
+    "name": "完形填空语境判断",
+    "subject": "英语",
+    "grade": "九年级",
+    "chapter": "综合训练",
+    "parent_id": null,
+    "cognitive_level": "分析",
+    "curriculum_standard_ref": "E-9-CLOZE-01"
+  },
+  {
+    "id": "en_writing_opinion",
+    "name": "观点类书面表达",
+    "subject": "英语",
+    "grade": "九年级",
+    "chapter": "写作",
+    "parent_id": null,
+    "cognitive_level": "创造",
+    "curriculum_standard_ref": "E-9-WRITE-02"
+  }
+]

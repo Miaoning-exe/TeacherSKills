@@ -1,0 +1,42 @@
+[
+  {
+    "id": "math_quad_graph",
+    "name": "二次函数的图像与性质",
+    "subject": "数学",
+    "grade": "九年级",
+    "chapter": "二次函数",
+    "parent_id": null,
+    "cognitive_level": "理解",
+    "curriculum_standard_ref": "M-9-ALG-02"
+  },
+  {
+    "id": "math_quad_vertex",
+    "name": "二次函数顶点坐标",
+    "subject": "数学",
+    "grade": "九年级",
+    "chapter": "二次函数",
+    "parent_id": "math_quad_graph",
+    "cognitive_level": "应用",
+    "curriculum_standard_ref": "M-9-ALG-03"
+  },
+  {
+    "id": "math_factorization",
+    "name": "因式分解",
+    "subject": "数学",
+    "grade": "八年级",
+    "chapter": "整式",
+    "parent_id": null,
+    "cognitive_level": "应用",
+    "curriculum_standard_ref": "M-8-ALG-01"
+  },
+  {
+    "id": "math_linear_model",
+    "name": "一次函数建模",
+    "subject": "数学",
+    "grade": "八年级",
+    "chapter": "一次函数",
+    "parent_id": null,
+    "cognitive_level": "分析",
+    "curriculum_standard_ref": "M-8-FUNC-02"
+  }
+]

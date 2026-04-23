@@ -1,0 +1,50 @@
+[
+  {
+    "student_id": "stu_001",
+    "question_id": "sample_math_choice_01",
+    "answer": "A",
+    "score": 3.0,
+    "max_score": 3.0,
+    "feedback": "答案正确"
+  },
+  {
+    "student_id": "stu_001",
+    "question_id": "sample_math_fill_01",
+    "answer": "3",
+    "score": 4.0,
+    "max_score": 4.0,
+    "feedback": "答案正确"
+  },
+  {
+    "student_id": "stu_001",
+    "question_id": "sample_math_app_01",
+    "answer": "先求顶点，再代入函数，得到最大利润是 38 元。",
+    "score": null,
+    "max_score": 10.0,
+    "feedback": "待评分：远程评分不可用"
+  },
+  {
+    "student_id": "stu_002",
+    "question_id": "sample_cn_read_01",
+    "answer": "作者怀念校园生活，也怀念那段单纯美好的时光。",
+    "score": null,
+    "max_score": 6.0,
+    "feedback": "待评分：远程评分不可用"
+  },
+  {
+    "student_id": "stu_002",
+    "question_id": "sample_en_grammar_01",
+    "answer": "collecting",
+    "score": 2.0,
+    "max_score": 2.0,
+    "feedback": "答案正确"
+  },
+  {
+    "student_id": "stu_002",
+    "question_id": "sample_en_write_01",
+    "answer": "I think middle school students should join reading clubs because they can share ideas and learn new words from each other.",
+    "score": null,
+    "max_score": 15.0,
+    "feedback": "待评分：远程评分不可用"
+  }
+]

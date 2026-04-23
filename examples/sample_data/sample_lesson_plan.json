@@ -1,0 +1,61 @@
+{
+  "id": "lesson_sample_001",
+  "title": "二次函数的图像与性质",
+  "subject": "数学",
+  "grade": "九年级",
+  "duration_minutes": 45,
+  "knowledge_points": [
+    "二次函数的概念与表达式",
+    "图像的开口方向、对称轴与顶点",
+    "二次函数的增减性与最值"
+  ],
+  "objectives": [
+    "理解二次函数图像与解析式之间的对应关系。",
+    "能够根据图像判断开口方向、对称轴和顶点。",
+    "在例题与变式训练中发展数形结合意识。"
+  ],
+  "key_points": [
+    "图像的开口方向、对称轴与顶点",
+    "解析式与图像之间的对应关系"
+  ],
+  "difficult_points": [
+    "顶点坐标与对称轴关系混淆",
+    "只会代数计算，不会借助图像判断性质"
+  ],
+  "teaching_flow": [
+    {
+      "phase": "导入",
+      "duration_minutes": 6,
+      "content": "通过抛物线情境引出二次函数图像。",
+      "teacher_activity": "展示生活中的抛物线实例，引导学生回顾一次函数图像。",
+      "student_activity": "观察图片并比较抛物线与直线的差异。",
+      "design_intent": "激活旧知，建立新旧知识联系。"
+    },
+    {
+      "phase": "新授",
+      "duration_minutes": 20,
+      "content": "讲解二次函数图像特征及与解析式的关系。",
+      "teacher_activity": "结合描点和图像分析开口方向、对称轴和顶点。",
+      "student_activity": "记录规律并完成教师引导下的分析任务。",
+      "design_intent": "帮助学生建立数形结合的核心认知。"
+    },
+    {
+      "phase": "练习",
+      "duration_minutes": 12,
+      "content": "完成参数变化与图像变化的配对练习。",
+      "teacher_activity": "投放基础题和变式题，组织学生交流思路。",
+      "student_activity": "独立完成练习并在小组内说明依据。",
+      "design_intent": "检测学生是否能够迁移运用知识。"
+    },
+    {
+      "phase": "小结",
+      "duration_minutes": 7,
+      "content": "总结本课要点并布置作业。",
+      "teacher_activity": "组织学生归纳本课重点，布置分层作业。",
+      "student_activity": "口头总结收获，记录课后任务。",
+      "design_intent": "形成完整认知闭环。"
+    }
+  ],
+  "homework": "完成基础巩固题，并选做一道最值应用题。",
+  "reflection": "关注学生是否真正建立图像与解析式的双向联系。"
+}
