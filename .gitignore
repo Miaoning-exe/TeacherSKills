@@ -13,3 +13,5 @@ htmlcov/
 *.pdf
 wiki/
 .claude
+examples_output/
+pytest-tmp/

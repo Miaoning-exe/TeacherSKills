@@ -1,6 +1,6 @@
 [build-system]
 requires = ["setuptools>=68"]
-build-backend = "setuptools.backends.legacy:build"
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "teacherskills"
@@ -16,11 +16,18 @@ dependencies = [
 [project.optional-dependencies]
 export = ["python-docx>=1.1"]
 visualization = ["matplotlib>=3.8"]
-dev = ["pytest>=8.0", "pytest-cov"]
+dev = [
+    "pytest>=8.0", 
+    "pytest-cov",
+    "fastapi>=0.110",
+    "uvicorn>=0.29",
+    "python-docx>=1.1",
+    "matplotlib>=3.8",
+]
 
 [project.scripts]
 teacherskills-mcp = "mcp_server.stdio_server:main"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["shared*", "mcp_server*"]
+include = ["shared*", "mcp_server*", "server*", "skills*"]
