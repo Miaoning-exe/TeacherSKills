@@ -1,4 +1,5 @@
 from pathlib import Path
+from zipfile import ZipFile
 
 from shared.schemas.exam import AnswerKey, AnswerSheetSpec, ExamBlueprint, ExamPackage, ScoringRubric
 from skills.zujuan.scripts.build_exam_package import main
@@ -51,3 +52,9 @@ def test_build_exam_package_outputs_consistent_files(tmp_path: Path) -> None:
     assert all(package.checks.values())
     assert package.files["package_json"] == "package.json"
     assert "来源清单" in (output_dir / "sources.md").read_text(encoding="utf-8")
+
+    with ZipFile(output_dir / "试卷.docx") as docx:
+        styles_xml = docx.read("word/styles.xml").decode("utf-8")
+        document_xml = docx.read("word/document.xml").decode("utf-8")
+    assert 'w:eastAsia="宋体"' in styles_xml
+    assert 'w:eastAsia="宋体"' in document_xml

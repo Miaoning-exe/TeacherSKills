@@ -26,7 +26,8 @@ from shared.schemas.exam import (
 )
 from shared.schemas.question import Question, QuestionType
 from shared.schemas.research import ResearchDossier
-from shared.schemas.template import TemplateProfile
+from shared.schemas.template import TemplateFormattingProfile, TemplateProfile
+from shared.tools.docx_renderer import apply_cjk_formatting
 from shared.tools.sources import render_sources_markdown
 from skills.zujuan.scripts.assemble_exam import ExamConstraints, SectionConstraint, assemble_exam
 
@@ -61,6 +62,7 @@ def build_exam_package(
     files = _write_package_files(
         output_dir=output_dir,
         research=research,
+        formatting=profile.formatting,
         blueprint=blueprint,
         exam=exam,
         answer_key=answer_key,
@@ -201,6 +203,7 @@ def _write_package_files(
     *,
     output_dir: Path,
     research: ResearchDossier,
+    formatting: TemplateFormattingProfile,
     blueprint: ExamBlueprint,
     exam: ExamPaper,
     answer_key: AnswerKey,
@@ -219,10 +222,10 @@ def _write_package_files(
         "scoring_rubric_json": "scoring_rubric.json",
         "sources_md": "sources.md",
     }
-    _write_exam_docx(exam, output_dir / files["exam_docx"])
-    _write_answer_sheet_docx(answer_sheet, output_dir / files["answer_sheet_docx"])
-    _write_answer_key_docx(answer_key, output_dir / files["answer_key_docx"])
-    _write_scoring_rubric_docx(scoring_rubric, output_dir / files["scoring_rubric_docx"])
+    _write_exam_docx(exam, output_dir / files["exam_docx"], formatting)
+    _write_answer_sheet_docx(answer_sheet, output_dir / files["answer_sheet_docx"], formatting)
+    _write_answer_key_docx(answer_key, output_dir / files["answer_key_docx"], formatting)
+    _write_scoring_rubric_docx(scoring_rubric, output_dir / files["scoring_rubric_docx"], formatting)
     (output_dir / files["exam_json"]).write_text(exam.model_dump_json(indent=2) + "\n", encoding="utf-8")
     (output_dir / files["blueprint_json"]).write_text(blueprint.model_dump_json(indent=2) + "\n", encoding="utf-8")
     (output_dir / files["answer_sheet_json"]).write_text(answer_sheet.model_dump_json(indent=2) + "\n", encoding="utf-8")
@@ -235,7 +238,7 @@ def _write_package_files(
     return files
 
 
-def _write_exam_docx(exam: ExamPaper, output_path: Path) -> None:
+def _write_exam_docx(exam: ExamPaper, output_path: Path, formatting: TemplateFormattingProfile) -> None:
     document = _new_document()
     document.add_heading(exam.title, level=1)
     document.add_paragraph(f"学科：{exam.subject}    年级：{exam.grade}")
@@ -246,10 +249,15 @@ def _write_exam_docx(exam: ExamPaper, output_path: Path) -> None:
         document.add_paragraph(f"本部分共 {len(section.questions)} 题，共 {section.section_score:g} 分。")
         for number, question in _numbered_questions(exam, section_filter=section.title):
             _add_question(document, number, question)
+    apply_cjk_formatting(document, formatting)
     document.save(output_path)
 
 
-def _write_answer_sheet_docx(answer_sheet: AnswerSheetSpec, output_path: Path) -> None:
+def _write_answer_sheet_docx(
+    answer_sheet: AnswerSheetSpec,
+    output_path: Path,
+    formatting: TemplateFormattingProfile,
+) -> None:
     document = _new_document()
     document.add_heading(f"{answer_sheet.title} 答题卡", level=1)
     document.add_paragraph("    ".join(f"{field}: __________" for field in answer_sheet.student_fields))
@@ -262,20 +270,26 @@ def _write_answer_sheet_docx(answer_sheet: AnswerSheetSpec, output_path: Path) -
             if section.question_type not in {QuestionType.CHOICE, QuestionType.FILL_BLANK}:
                 for _ in range(4):
                     document.add_paragraph("_" * 72)
+    apply_cjk_formatting(document, formatting)
     document.save(output_path)
 
 
-def _write_answer_key_docx(answer_key: AnswerKey, output_path: Path) -> None:
+def _write_answer_key_docx(answer_key: AnswerKey, output_path: Path, formatting: TemplateFormattingProfile) -> None:
     document = _new_document()
     document.add_heading("参考答案", level=1)
     for item in answer_key.items:
         document.add_paragraph(f"{item.question_number}. {item.answer}（{item.score:g} 分）")
         if item.explanation:
             document.add_paragraph(f"解析：{item.explanation}")
+    apply_cjk_formatting(document, formatting)
     document.save(output_path)
 
 
-def _write_scoring_rubric_docx(scoring_rubric: ScoringRubric, output_path: Path) -> None:
+def _write_scoring_rubric_docx(
+    scoring_rubric: ScoringRubric,
+    output_path: Path,
+    formatting: TemplateFormattingProfile,
+) -> None:
     document = _new_document()
     document.add_heading("评分细则", level=1)
     for item in scoring_rubric.items:
@@ -284,6 +298,7 @@ def _write_scoring_rubric_docx(scoring_rubric: ScoringRubric, output_path: Path)
             document.add_paragraph(point, style="List Bullet")
         if item.review_required:
             document.add_paragraph("主观题需教师复核学生过程表达与关键步骤。")
+    apply_cjk_formatting(document, formatting)
     document.save(output_path)
 
 

@@ -156,6 +156,8 @@ exam_package/
 
 一致性校验覆盖总分、分卷分值、答题卡题号、答案题号、评分细则题号、答案完整性和输出文件存在性。
 
+DOCX 渲染会读取 `TemplateProfile.formatting`，并在 Word 样式与具体文本 run 中写入中文字体属性（含 `eastAsia`），避免中文内容在不同环境下回退到不合适的默认字体。
+
 ### 推荐命令形态
 
 ```bash
