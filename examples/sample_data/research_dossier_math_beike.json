@@ -1,0 +1,59 @@
+{
+  "id": "research_math_beike_001",
+  "task_type": "备课",
+  "subject": "数学",
+  "grade": "九年级",
+  "topic": "二次函数的图像与性质",
+  "created_at": "2026-05-12",
+  "query_summary": "围绕二次函数图像性质备课整理课标要求、教材重点、常见误区和活动模板。",
+  "local_fallback": false,
+  "sources": [
+    {
+      "id": "src_beike_curriculum_quad",
+      "title": "二次函数图像与性质课标要求摘录",
+      "source_type": "课标",
+      "summary": "明确学生应理解二次函数图像开口方向、对称轴、顶点和最值之间的关系。",
+      "publisher": "课程标准资料",
+      "published_at": "2022",
+      "retrieved_at": "2026-05-12",
+      "credibility": "高",
+      "citation_locations": ["备课报告：课标对齐", "教学目标"],
+      "review_note": "请结合当地教材章节顺序复核。"
+    },
+    {
+      "id": "src_beike_textbook_activity",
+      "title": "二次函数图像探究活动模板",
+      "source_type": "教材",
+      "summary": "通过参数变化观察图像平移、开口和顶点变化，适合课堂探究活动。",
+      "publisher": "TeacherSkills 本地教学模板",
+      "retrieved_at": "2026-05-12",
+      "credibility": "中",
+      "citation_locations": ["课堂活动建议", "教学过程：新授"],
+      "review_note": "需教师按实际教材例题替换活动数据。"
+    },
+    {
+      "id": "src_beike_misconception",
+      "title": "二次函数常见误区整理",
+      "source_type": "本地参考",
+      "summary": "学生容易混淆顶点坐标、对称轴和最值条件，需要通过图像与解析式互证。",
+      "publisher": "TeacherSkills 本地参考",
+      "retrieved_at": "2026-05-12",
+      "credibility": "中",
+      "citation_locations": ["常见误区", "形成性评价"],
+      "review_note": "建议教师结合班级前测数据补充真实错例。"
+    }
+  ],
+  "key_findings": [
+    "备课应从图像直观、解析式参数和实际情境三条线索组织。",
+    "教学重点是开口方向、对称轴、顶点坐标与最值的关系。",
+    "教学难点是从解析式迁移到图像判断，以及从图像回读函数性质。"
+  ],
+  "agent_inferences": [
+    "课堂导入可使用抛物线运动或桥拱情境，帮助学生建立图像直观。",
+    "形成性评价适合安排图像识别、顶点求解和实际问题解释三类小任务。"
+  ],
+  "teacher_review_notes": [
+    "请替换为本校教材中的例题编号。",
+    "请根据学生前测表现调整活动时长。"
+  ]
+}

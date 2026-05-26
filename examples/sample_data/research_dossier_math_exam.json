@@ -1,0 +1,59 @@
+{
+  "id": "research_math_exam_001",
+  "task_type": "组卷",
+  "subject": "数学",
+  "grade": "九年级",
+  "topic": "二次函数单元卷",
+  "created_at": "2026-05-12",
+  "query_summary": "围绕九年级二次函数单元卷整理课标、题型结构、评分细则和本地样卷模板。",
+  "local_fallback": false,
+  "sources": [
+    {
+      "id": "src_math_curriculum_quad",
+      "title": "义务教育数学课程标准中二次函数相关要求摘录",
+      "source_type": "课标",
+      "summary": "用于确认二次函数图像、顶点、对称轴和实际问题建模的考查范围。",
+      "publisher": "课程标准资料",
+      "published_at": "2022",
+      "retrieved_at": "2026-05-12",
+      "credibility": "高",
+      "citation_locations": ["试卷蓝图：知识点覆盖", "评分细则：核心能力要求"],
+      "review_note": "正式使用前应由教师核对当地教材版本和考试说明。"
+    },
+    {
+      "id": "src_math_sample_exam_structure",
+      "title": "初中数学标准卷题型结构样例",
+      "source_type": "样卷",
+      "summary": "选择题、填空题、解答题三段式结构，适合作为第一版标准卷 profile。",
+      "publisher": "TeacherSkills 本地样例",
+      "retrieved_at": "2026-05-12",
+      "credibility": "中",
+      "citation_locations": ["模板 profile：sections", "答题卡结构"],
+      "review_note": "该结构是通用样例，不代表具体地区中考格式。"
+    },
+    {
+      "id": "src_math_rubric_steps",
+      "title": "数学解答题分步给分原则",
+      "source_type": "评分",
+      "summary": "主观题评分应区分建模、计算、图像解释和结论表达，便于生成评分细则。",
+      "publisher": "TeacherSkills 本地评分参考",
+      "retrieved_at": "2026-05-12",
+      "credibility": "中",
+      "citation_locations": ["评分细则：解答题"],
+      "review_note": "需要教师按本校评分标准调整每步分值。"
+    }
+  ],
+  "key_findings": [
+    "二次函数单元卷应覆盖图像性质、顶点坐标、对称轴、最值和实际问题建模。",
+    "初中数学标准卷第一版可采用选择题、填空题、解答题结构。",
+    "解答题评分需要保留过程性分值，不能只给最终答案。"
+  ],
+  "agent_inferences": [
+    "若用于单元测验，可将难度控制在约 7:2:1，并把压轴题放在解答题末尾。",
+    "答题卡应为选择题预留涂选区，为解答题预留足够步骤书写空间。"
+  ],
+  "teacher_review_notes": [
+    "请复核本地区考试总分、时长和题量是否与本 profile 一致。",
+    "请确认题目是否覆盖教师本周实际教学内容。"
+  ]
+}

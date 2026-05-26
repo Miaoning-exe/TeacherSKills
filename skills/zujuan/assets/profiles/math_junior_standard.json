@@ -1,0 +1,75 @@
+{
+  "id": "math_junior_standard",
+  "name": "初中数学标准卷（样例版）",
+  "subject": "数学",
+  "grade_band": "初中",
+  "exam_type": "单元测验",
+  "total_score": 17,
+  "duration_minutes": 45,
+  "sections": [
+    {
+      "title": "一、选择题",
+      "question_type": "选择题",
+      "item_count": 1,
+      "score_per_item": 3,
+      "total_score": 3,
+      "difficulty_ratio": {
+        "易": 1.0
+      },
+      "notes": ["正式大卷可扩展为 8-12 道选择题。"]
+    },
+    {
+      "title": "二、填空题",
+      "question_type": "填空题",
+      "item_count": 1,
+      "score_per_item": 4,
+      "total_score": 4,
+      "difficulty_ratio": {
+        "中": 1.0
+      },
+      "notes": ["正式大卷可扩展为 4-6 道填空题。"]
+    },
+    {
+      "title": "三、解答题",
+      "question_type": "应用题",
+      "item_count": 1,
+      "score_per_item": 10,
+      "total_score": 10,
+      "difficulty_ratio": {
+        "难": 1.0
+      },
+      "notes": ["第一版以应用题代表数学解答题，后续可拆分计算题、证明题和综合题。"]
+    }
+  ],
+  "formatting": {
+    "page_size": "A4",
+    "orientation": "portrait",
+    "font_family": "宋体",
+    "font_size_pt": 10.5,
+    "line_spacing": 1.2,
+    "include_header": true,
+    "include_score_table": true
+  },
+  "required_outputs": [
+    "试卷.docx",
+    "答题卡.docx",
+    "参考答案.docx",
+    "评分细则.docx",
+    "exam.json",
+    "blueprint.json",
+    "answer_sheet.json",
+    "answer_key.json",
+    "scoring_rubric.json",
+    "package.json",
+    "sources.md"
+  ],
+  "source_ids": [
+    "src_math_curriculum_quad",
+    "src_math_sample_exam_structure",
+    "src_math_rubric_steps"
+  ],
+  "review_notes": [
+    "该 profile 是样例版，题量与总分适配当前 sample_questions.json。",
+    "正式 100/120 分试卷可在不改脚本的情况下扩展 item_count 和 score_per_item。"
+  ]
+}

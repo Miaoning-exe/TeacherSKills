@@ -102,7 +102,9 @@ def _render_answer(number: int, question: Question) -> list[str]:
 
 
 def build_arg_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="导出 ExamPaper 为 Markdown 或 DOCX。")
+    parser = argparse.ArgumentParser(
+        description="导出 ExamPaper 为 Markdown 或 DOCX；正式试卷包请优先使用 build_exam_package.py。"
+    )
     parser.add_argument("--input", required=True, type=Path, help="ExamPaper JSON 文件")
     parser.add_argument("--format", choices=["markdown", "docx"], required=True, help="导出格式")
     parser.add_argument("--output", required=True, type=Path, help="输出文件路径")
