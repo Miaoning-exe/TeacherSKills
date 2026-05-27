@@ -1,0 +1,32 @@
+[
+  {
+    "student_id": "stu_001",
+    "question_id": "sample_math_choice_01",
+    "answer": "A"
+  },
+  {
+    "student_id": "stu_001",
+    "question_id": "sample_math_fill_01",
+    "answer": "3"
+  },
+  {
+    "student_id": "stu_001",
+    "question_id": "sample_math_app_01",
+    "answer": "先求顶点，再代入函数，得到最大利润是 38 元。"
+  },
+  {
+    "student_id": "stu_002",
+    "question_id": "sample_math_choice_01",
+    "answer": "B"
+  },
+  {
+    "student_id": "stu_002",
+    "question_id": "sample_math_fill_01",
+    "answer": "2"
+  },
+  {
+    "student_id": "stu_002",
+    "question_id": "sample_math_app_01",
+    "answer": "最大值为 35 元。"
+  }
+]
