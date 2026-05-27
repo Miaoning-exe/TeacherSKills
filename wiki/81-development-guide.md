@@ -124,15 +124,22 @@ python skills/beike/scripts/analyze_curriculum.py \
   --output-report beike_report.md
 ```
 
+### Stage E 专业备课包
+
+```bash
+python skills/beike/scripts/build_lesson_package.py \
+  --research examples/sample_data/research_dossier_math_beike.json \
+  --output-dir lesson_package
+```
+
+输出包含 `备课分析.docx`、`教学设计.docx`、`课堂活动单.docx`、`配套练习.docx`、`lesson_context.json`、`lesson_plan.json`、`package.json` 和 `sources.md`。
+
 ### Phase 3 写教案
 
 ```bash
 python skills/jiaoan/scripts/generate_plan.py \
-  --title 二次函数的图像与性质 \
-  --subject 数学 \
-  --grade 九年级 \
+  --lesson-context lesson_package/lesson_context.json \
   --template standard \
-  --beike-report examples/demo_beike.md \
   --output-json lesson_plan.json \
   --output-markdown lesson_plan.md
 ```
@@ -199,6 +206,7 @@ MCP 客户端配置可参考 `examples/mcp_config.json`。
 - `examples/demo_full_workflow.md`：串联出题和组卷
 - `examples/demo_xueqing.md`：演示学情分析
 - `examples/demo_beike.md`：演示备课分析
+- `examples/demo_beike_professional.md`：演示 Stage E 专业备课包
 - `examples/demo_jiaoan.md`：演示标准教案输出
 - `examples/demo_pingyu.md`：演示批量评语输出
 
@@ -213,6 +221,7 @@ MCP 客户端配置可参考 `examples/mcp_config.json`。
   - `tests/test_grading.py`：批改成功路径与离线降级
   - `tests/test_beike.py`：备课分析解析、匹配、报告与 CLI
   - `tests/test_jiaoan.py`：教案生成、模板渲染与 CLI
+  - `tests/test_lesson_package.py`：专业备课包文件输出、上下文、来源和 DOCX 字体校验
   - `tests/test_pingyu.py`：评语生成、个性化差异与 CLI
   - `tests/test_mcp_server.py`：MCP initialize、tools/list、tools/call 与 stdio 交互
   - `tests/test_learning_analysis.py`：学情分析成功路径、报告生成与图表依赖降级

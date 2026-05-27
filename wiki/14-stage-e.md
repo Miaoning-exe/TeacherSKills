@@ -73,11 +73,21 @@ DOCX 文档包 + JSON + sources.md
 | E1.2 | 新增 `shared/schemas/template.py` | ✅ | 定义 `TemplateProfile`、模板 section 和格式元数据。 |
 | E1.3 | 新增资料包样例 | ✅ | 已覆盖数学组卷、备课两个场景：`research_dossier_math_exam.json`、`research_dossier_math_beike.json`。 |
 | E1.4 | 更新 Skill 行为规则 | ✅ | `beike`、`chuti`、`zujuan` 已明确要求先检索、生成资料包和 `sources.md`，无资料时标记本地模板草稿。 |
-| E1.5 | 新增来源渲染工具 | ✅ | `python -m shared.tools.sources research_dossier.json --output sources.md` 可从 `ResearchDossier` 生成 `sources.md`。 |
+| E1.5 | 新增来源渲染工具 | ✅ | `.\.venv\Scripts\python.exe -m shared.tools.sources examples\sample_data\research_dossier_math_exam.json --output examples_output\sources.md` 可从 `ResearchDossier` 生成 `sources.md`。 |
 
 ### E1 交付说明
 
 E1 当前只实现资料增强层的数据边界和确定性渲染能力，不把 web search 写入脚本。Agent 仍负责检索、比较和筛选资料；脚本只消费 `research_dossier.json` 并输出可复核的 `sources.md`。这保持了 Stage E “Agent 先检索，脚本后生成”的边界。
+
+### 运行
+
+在项目根目录运行：
+
+```powershell
+python -m shared.tools.sources `
+  examples\sample_data\research_dossier_math_exam.json `
+  --output examples_output\sources.md
+```
 
 ## E2: 组卷专业化标杆
 
@@ -158,14 +168,16 @@ exam_package/
 
 DOCX 渲染会读取 `TemplateProfile.formatting`，并在 Word 样式与具体文本 run 中写入中文字体属性（含 `eastAsia`），避免中文内容在不同环境下回退到不合适的默认字体。
 
-### 推荐命令形态
+### 运行
 
-```bash
-python skills/zujuan/scripts/build_exam_package.py \
-  --research research_dossier.json \
-  --questions questions.json \
-  --profile skills/zujuan/assets/profiles/math_junior_standard.json \
-  --output-dir output/exam_package
+在项目根目录运行：
+
+```powershell
+python skills\zujuan\scripts\build_exam_package.py `
+  --research examples\sample_data\research_dossier_math_exam.json `
+  --questions examples\sample_data\sample_questions.json `
+  --profile skills\zujuan\assets\profiles\math_junior_standard.json `
+  --output-dir examples_output\exam_package
 ```
 
 ## E3: 备课专业化
@@ -190,11 +202,41 @@ lesson_package/
 
 | # | 任务 | 状态 | 备注 |
 |---|------|------|------|
-| E3.1 | 改造 `beike` 输入 | 📋 | 支持 `research_dossier.json`，保留本地参考降级。 |
-| E3.2 | 新增 `LessonContext` | 📋 | 统一课标、教材、学情、教学目标和活动建议。 |
-| E3.3 | 新增备课 DOCX 模板 | 📋 | 备课分析、课堂活动单、配套练习。 |
-| E3.4 | 更新 `jiaoan` | 📋 | 从 `LessonContext` 生成更正式的教案文档。 |
-| E3.5 | 新增来源与复核区 | 📋 | 明确哪些内容来自资料，哪些是生成建议。 |
+| E3.1 | 改造 `beike` 输入 | ✅ | `analyze_curriculum.py` 支持 `--research-dossier`，报告会写入来源事实、Agent 推理和教师待复核内容；`build_lesson_package.py` 无资料包时可本地参考降级。 |
+| E3.2 | 新增 `LessonContext` | ✅ | `shared/schemas/lesson.py` 增加 `LessonContext`、`LessonPackage`，统一课标、教材、学情、教学目标和活动建议。 |
+| E3.3 | 新增备课 DOCX 模板 | ✅ | `skills/beike/assets/templates/README.md` 记录四类 DOCX 输出约定，第一版由脚本确定性生成。 |
+| E3.4 | 更新 `jiaoan` | ✅ | `generate_plan.py` 支持 `--lesson-context`，可从结构化上下文生成更正式的教案文档。 |
+| E3.5 | 新增来源与复核区 | ✅ | `lesson_package` 必含 `sources.md`，`LessonContext.teacher_review_notes` 保留教师复核提示。 |
+
+### E3 交付说明
+
+E3 第一版复用 E1 的 `ResearchDossier` 作为资料入口，并新增 `LessonContext` 作为备课到教案之间的稳定中间数据。`beike` 负责把资料包和本地课标摘录整理为上下文，`jiaoan` 负责从上下文生成正式教学设计
+
+`build_lesson_package.py` 当前会生成：
+
+```text
+lesson_package/
+  备课分析.docx
+  教学设计.docx
+  课堂活动单.docx
+  配套练习.docx
+  lesson_context.json
+  lesson_plan.json
+  package.json
+  sources.md
+```
+
+其中 `备课分析.docx` 区分课标/资料事实、Agent 推理建议和教师待复核内容；`教学设计.docx` 由 `LessonContext` 进入 `jiaoan` 的 `LessonPlan` 流程生成；`课堂活动单.docx` 与 `配套练习.docx` 面向课堂可打印使用。
+
+### 运行
+
+在项目根目录运行：
+
+```powershell
+python skills\beike\scripts\build_lesson_package.py `
+  --research examples\sample_data\research_dossier_math_beike.json `
+  --output-dir examples_output\lesson_package
+```
 
 ## E4: 其他 Skill 规范化
 
@@ -248,3 +290,6 @@ Stage E 不以“脚本能跑”为完成标准，而以教师可用性为标准
 - 答题卡生成需要先支持常见纸面结构，再考虑机读卡识别或扫描场景。
 - 学科模板差异很大，先做一个标杆学科，不要同时铺开三科。
 - 需要避免把 Agent 自由生成内容伪装成官方依据，所有推理建议都应明确标记。
+
+## 遗留项
+- exam_package 暂时只支持数学, 不支持语文英语

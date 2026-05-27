@@ -10,6 +10,8 @@ if str(PROJECT_ROOT) not in sys.path:
 
 from pydantic import BaseModel, ValidationError
 
+from shared.schemas.research import ResearchDossier
+
 
 class CurriculumEntry(BaseModel):
     title: str
@@ -146,6 +148,7 @@ def generate_analysis_report(
     *,
     analysis: CurriculumAnalysis,
     bloom_descriptions: dict[str, str],
+    research: ResearchDossier | None = None,
 ) -> str:
     primary_entry = analysis.matched_entries[0]
     knowledge_points = _deduplicate(item for entry in analysis.matched_entries for item in entry.knowledge_points)
@@ -213,6 +216,22 @@ def generate_analysis_report(
     for item in assessments:
         lines.append(f"- {item}")
 
+    if research:
+        lines.extend(["", "## 资料来源事实", ""])
+        for finding in research.key_findings:
+            lines.append(f"- {finding}")
+        lines.extend(["", "## Agent 推理建议", ""])
+        for inference in research.agent_inferences:
+            lines.append(f"- {inference}")
+        lines.extend(["", "## 教师待复核", ""])
+        review_notes = research.teacher_review_notes or [
+            note for source in research.sources if source.review_note for note in [source.review_note]
+        ]
+        for note in review_notes:
+            lines.append(f"- {note}")
+        if research.local_fallback:
+            lines.append("- 当前资料包标记为本地模板草稿，请教师补充真实教材与课标来源。")
+
     lines.extend(
         [
             "",
@@ -233,6 +252,7 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument("--keywords", default="", help="逗号分隔的辅助关键词")
     parser.add_argument("--curriculum-file", type=Path, default=DEFAULT_CURRICULUM_PATH, help="课标参考文件")
     parser.add_argument("--bloom-file", type=Path, default=DEFAULT_BLOOM_PATH, help="Bloom 分类参考文件")
+    parser.add_argument("--research-dossier", type=Path, default=None, help="ResearchDossier JSON 资料包")
     parser.add_argument("--output-report", type=Path, default=None, help="输出 Markdown 报告路径")
     return parser
 
@@ -244,17 +264,23 @@ def main(argv: list[str] | None = None) -> int:
         curriculum_text = args.curriculum_file.read_text(encoding="utf-8")
         bloom_text = args.bloom_file.read_text(encoding="utf-8")
         entries = load_curriculum_entries(curriculum_text)
+        research = (
+            ResearchDossier.model_validate_json(args.research_dossier.read_text(encoding="utf-8"))
+            if args.research_dossier
+            else None
+        )
         keywords = [item.strip() for item in args.keywords.split(",") if item.strip()]
         analysis = analyze_curriculum(
-            subject=args.subject,
-            grade=args.grade,
-            topic=args.topic,
+            subject=research.subject if research else args.subject,
+            grade=research.grade if research else args.grade,
+            topic=research.topic if research else args.topic,
             keywords=keywords,
             entries=entries,
         )
         report = generate_analysis_report(
             analysis=analysis,
             bloom_descriptions=load_bloom_descriptions(bloom_text),
+            research=research,
         )
     except FileNotFoundError as exc:
         sys.stderr.write(f"输入文件不存在: {exc.filename}\n")

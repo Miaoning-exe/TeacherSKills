@@ -13,7 +13,7 @@ from shared.schemas.exam import (
     ScoringRubric,
     ScoringRubricItem,
 )
-from shared.schemas.lesson import LessonPlan, TeachingStep
+from shared.schemas.lesson import LessonContext, LessonPackage, LessonPlan, TeachingStep
 from shared.schemas.comment import StudentComment, TeacherObservation
 from shared.schemas.student import KnowledgeMastery, StudentResponse
 from shared.schemas.research import CredibilityLevel, ResearchDossier, SourceEvidence, SourceType
@@ -37,6 +37,8 @@ __all__ = [
     "ScoringRubricItem",
     "ExamPackage",
     "LessonPlan",
+    "LessonContext",
+    "LessonPackage",
     "TeachingStep",
     "TeacherObservation",
     "StudentComment",

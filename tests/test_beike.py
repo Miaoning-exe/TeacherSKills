@@ -84,3 +84,28 @@ def test_main_writes_report_file(tmp_path: Path) -> None:
     report = output_path.read_text(encoding="utf-8")
     assert "记叙文阅读" in report
     assert "人物证据卡分享" in report
+
+
+def test_main_accepts_research_dossier(tmp_path: Path) -> None:
+    output_path = tmp_path / "beike_report.md"
+
+    exit_code = main(
+        [
+            "--subject",
+            "数学",
+            "--grade",
+            "九年级",
+            "--topic",
+            "二次函数",
+            "--research-dossier",
+            "examples/sample_data/research_dossier_math_beike.json",
+            "--output-report",
+            str(output_path),
+        ]
+    )
+
+    assert exit_code == 0
+    report = output_path.read_text(encoding="utf-8")
+    assert "## 资料来源事实" in report
+    assert "## Agent 推理建议" in report
+    assert "## 教师待复核" in report

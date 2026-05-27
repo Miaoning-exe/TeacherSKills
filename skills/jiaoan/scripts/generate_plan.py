@@ -11,7 +11,9 @@ if str(PROJECT_ROOT) not in sys.path:
 
 from pydantic import TypeAdapter, ValidationError
 
-from shared.schemas.lesson import LessonPlan, TeachingStep
+from shared.schemas.lesson import LessonContext, LessonPlan, TeachingStep
+from shared.schemas.template import TemplateFormattingProfile
+from shared.tools.docx_renderer import apply_cjk_formatting
 
 
 LESSON_PLAN_ADAPTER = TypeAdapter(LessonPlan)
@@ -134,6 +136,20 @@ def generate_lesson_plan(
     )
 
 
+def lesson_context_to_beike_context(context: LessonContext) -> dict[str, list[str] | str]:
+    return {
+        "knowledge_points": context.knowledge_points,
+        "focus_points": [f"教学重点：{item}" for item in context.key_points]
+        + [f"教学难点：{item}" for item in context.difficult_points],
+        "competencies": context.core_competencies,
+        "misconceptions": context.misconceptions,
+        "strategies": context.teaching_strategies,
+        "activities": context.activity_suggestions,
+        "assessments": context.assessment_suggestions,
+        "summary": "；".join(context.curriculum_alignment),
+    }
+
+
 def lesson_plan_to_json(plan: LessonPlan) -> str:
     return LESSON_PLAN_ADAPTER.dump_json(plan, indent=2).decode("utf-8")
 
@@ -158,7 +174,14 @@ def render_markdown(plan: LessonPlan, *, template: str, assessments: list[str] |
     return template_path.read_text(encoding="utf-8").format(**placeholders).rstrip() + "\n"
 
 
-def export_docx(plan: LessonPlan, output_path: Path, *, template: str, assessments: list[str] | None = None) -> None:
+def export_docx(
+    plan: LessonPlan,
+    output_path: Path,
+    *,
+    template: str,
+    assessments: list[str] | None = None,
+    formatting: TemplateFormattingProfile | None = None,
+) -> None:
     try:
         from docx import Document
     except ImportError as exc:
@@ -192,18 +215,20 @@ def export_docx(plan: LessonPlan, output_path: Path, *, template: str, assessmen
         document.add_heading("教学反思", level=2)
         document.add_paragraph(plan.reflection)
 
+    apply_cjk_formatting(document, formatting or TemplateFormattingProfile())
     output_path.parent.mkdir(parents=True, exist_ok=True)
     document.save(output_path)
 
 
 def build_arg_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="根据备课结果或教师输入生成 LessonPlan 教案。")
-    parser.add_argument("--title", required=True, help="教案标题")
-    parser.add_argument("--subject", required=True, help="学科")
-    parser.add_argument("--grade", required=True, help="年级")
+    parser.add_argument("--title", default="", help="教案标题")
+    parser.add_argument("--subject", default="", help="学科")
+    parser.add_argument("--grade", default="", help="年级")
     parser.add_argument("--template", choices=["standard", "5e"], default="standard", help="教案模板")
     parser.add_argument("--duration-minutes", type=int, default=45, help="课时长度")
     parser.add_argument("--beike-report", type=Path, default=None, help="备课报告 Markdown")
+    parser.add_argument("--lesson-context", type=Path, default=None, help="LessonContext JSON 文件")
     parser.add_argument("--knowledge-points", default="", help="逗号分隔的知识点")
     parser.add_argument("--objectives", default="", help="逗号分隔的教学目标")
     parser.add_argument("--output-json", type=Path, default=None, help="输出 LessonPlan JSON")
@@ -216,15 +241,24 @@ def main(argv: list[str] | None = None) -> int:
     parser = build_arg_parser()
     args = parser.parse_args(argv)
     try:
+        lesson_context = (
+            LessonContext.model_validate_json(args.lesson_context.read_text(encoding="utf-8"))
+            if args.lesson_context
+            else None
+        )
         beike_context = parse_beike_report(args.beike_report.read_text(encoding="utf-8")) if args.beike_report else None
+        if lesson_context:
+            beike_context = lesson_context_to_beike_context(lesson_context)
+        if not lesson_context and (not args.title or not args.subject or not args.grade):
+            raise ValueError("未提供 --lesson-context 时，--title、--subject、--grade 均为必填")
         knowledge_points = _split_csv(args.knowledge_points)
         objectives = _split_csv(args.objectives)
         plan = generate_lesson_plan(
-            title=args.title,
-            subject=args.subject,
-            grade=args.grade,
+            title=lesson_context.title if lesson_context else args.title,
+            subject=lesson_context.subject if lesson_context else args.subject,
+            grade=lesson_context.grade if lesson_context else args.grade,
             template=args.template,
-            duration_minutes=args.duration_minutes,
+            duration_minutes=lesson_context.duration_minutes if lesson_context else args.duration_minutes,
             beike_context=beike_context,
             knowledge_points=knowledge_points or None,
             objectives=objectives or None,

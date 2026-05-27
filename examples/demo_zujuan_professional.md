@@ -10,12 +10,12 @@
 
 ## 命令
 
-```bash
-python skills/zujuan/scripts/build_exam_package.py \
-  --research examples/sample_data/research_dossier_math_exam.json \
-  --questions examples/sample_data/sample_questions.json \
-  --profile skills/zujuan/assets/profiles/math_junior_standard.json \
-  --output-dir examples_output/exam_package
+```powershell
+.\.venv\Scripts\python.exe skills\zujuan\scripts\build_exam_package.py `
+  --research examples\sample_data\research_dossier_math_exam.json `
+  --questions examples\sample_data\sample_questions.json `
+  --profile skills\zujuan\assets\profiles\math_junior_standard.json `
+  --output-dir examples_output\exam_package
 ```
 
 ## 输出目录

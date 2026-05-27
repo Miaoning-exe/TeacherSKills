@@ -38,8 +38,10 @@ description: 按学科、知识点、题型、难度和数量生成符合 Teache
 1. Agent 先检索课标、教材、样题、题型和评分要求，形成 `research_dossier.json`。
 2. 渲染来源清单：
 
-```bash
-python -m shared.tools.sources research_dossier.json --output sources.md
+```powershell
+.\.venv\Scripts\python.exe -m shared.tools.sources `
+  examples\sample_data\research_dossier_math_exam.json `
+  --output examples_output\sources.md
 ```
 
 3. 读取 `references/question_types.md` 确认题型定义。

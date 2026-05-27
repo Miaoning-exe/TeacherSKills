@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from shared.schemas.lesson import LessonPlan
+from shared.schemas.lesson import LessonContext, LessonPlan
 from skills.jiaoan.scripts.generate_plan import generate_lesson_plan, main, parse_beike_report, render_markdown
 
 
@@ -78,3 +78,36 @@ def test_main_writes_json_and_markdown_outputs(tmp_path: Path) -> None:
     assert plan.title == "二次函数的图像与性质"
     assert "## 五、教学过程" in markdown
     assert "教学重点" in markdown
+
+
+def test_main_accepts_lesson_context(tmp_path: Path) -> None:
+    context_path = tmp_path / "lesson_context.json"
+    json_path = tmp_path / "lesson_plan.json"
+    context = LessonContext(
+        id="lesson_context_test",
+        title="二次函数的图像与性质",
+        subject="数学",
+        grade="九年级",
+        topic="二次函数的图像与性质",
+        knowledge_points=["图像的开口方向、对称轴与顶点"],
+        key_points=["图像的开口方向、对称轴与顶点"],
+        difficult_points=["混淆顶点坐标与对称轴"],
+        activity_suggestions=["观察参数变化并记录图像变化"],
+        assessment_suggestions=["课堂快测图像识别"],
+        source_ids=["src_test"],
+    )
+    context_path.write_text(context.model_dump_json(indent=2), encoding="utf-8")
+
+    exit_code = main(
+        [
+            "--lesson-context",
+            str(context_path),
+            "--output-json",
+            str(json_path),
+        ]
+    )
+
+    assert exit_code == 0
+    plan = LessonPlan.model_validate(json.loads(json_path.read_text(encoding="utf-8")))
+    assert plan.title == context.title
+    assert plan.knowledge_points == context.knowledge_points
