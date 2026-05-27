@@ -24,14 +24,16 @@ description: 按学科、知识点、题型、难度和数量生成符合 Teache
 
 | 参数 | 必填 | 示例 | 说明 |
 |------|------|------|------|
-| `subject` | 是 | `数学` | 支持 `数学`、`语文`、`英语` |
-| `knowledge-points` | 是 | `二次函数,图像性质` | 逗号分隔的知识点 ID 或名称 |
-| `question-type` | 是 | `选择题` | 见 `references/question_types.md` |
-| `difficulty` | 是 | `中` | 支持 `易`、`中`、`难` |
-| `count` | 否 | `5` | 默认 1 |
+| `subject` | 条件必填 | `数学` | 支持 `数学`、`语文`、`英语`；提供 `research-dossier` 或 `profile` 时可推断 |
+| `knowledge-points` | 条件必填 | `二次函数,图像性质` | 逗号分隔的知识点 ID 或名称；提供 `research-dossier` 时可推断 |
+| `question-type` | 条件必填 | `选择题` | 见 `references/question_types.md`；提供 `profile` 时可推断 |
+| `difficulty` | 条件必填 | `中` | 支持 `易`、`中`、`难`；提供 `profile` 时可推断 |
+| `count` | 否 | `5` | 可由 `profile.sections[].item_count` 推断 |
 | `grade` | 否 | `九年级` | 默认不写入题目字段，仅用于内容提示 |
-| `score` | 否 | `5` | 默认 1 |
-| `research-dossier` | 否 | `research_dossier.json` | Agent 检索后生成的资料包，作为出题依据和复核材料 |
+| `score` | 否 | `5` | 可由 `profile.sections[].score_per_item` 推断 |
+| `research-dossier` | 否 | `examples\sample_data\research_dossier_math_exam.json` | Agent 检索后生成的资料包，作为出题依据和复核材料 |
+| `profile` | 否 | `skills\zujuan\assets\profiles\math_junior_standard.json` | 考试样式文件，即 `TemplateProfile`，提供题型、数量、分值和难度结构 |
+| `output-dir` | 否 | `examples_output\question_package` | 输出题目包目录，包含 `questions.json`、`sources.md`、`package.json` |
 
 ## 推荐流程
 
@@ -49,22 +51,20 @@ description: 按学科、知识点、题型、难度和数量生成符合 Teache
    - 数学：`references/math_patterns.md`
    - 语文：`references/chinese_patterns.md`
    - 英语：`references/english_patterns.md`
-5. 调用脚本生成结构化 JSON：
+5. 调用脚本生成结构化题目包：
 
-```bash
-python skills/chuti/scripts/gen_question.py \
-  --subject 数学 \
-  --knowledge-points "二次函数的图像与性质" \
-  --question-type 选择题 \
-  --difficulty 中 \
-  --count 3 \
-  --output questions.json
+```powershell
+.\.venv\Scripts\python.exe skills\chuti\scripts\gen_question.py `
+  --research-dossier examples\sample_data\research_dossier_math_exam.json `
+  --profile skills\zujuan\assets\profiles\math_junior_standard.json `
+  --output-dir examples_output\question_package
 ```
 
 6. 校验输出：
 
-```bash
-python skills/chuti/scripts/validate_question.py questions.json
+```powershell
+.\.venv\Scripts\python.exe skills\chuti\scripts\validate_question.py `
+  examples_output\question_package\questions.json
 ```
 
 ## 输出约束
@@ -74,6 +74,7 @@ python skills/chuti/scripts/validate_question.py questions.json
 - 选择题必须包含 `options`。
 - 阅读理解、完形填空、文言文题建议包含 `material`。
 - 数学公式使用 LaTeX，行内公式写作 `$...$`。
+- Stage E 生成的题目应在 `metadata` 中记录 `source_ids`、`source_basis`、`difficulty_reason`、`exam_style_id`、`teacher_review_notes`。
 
 ## 限制
 

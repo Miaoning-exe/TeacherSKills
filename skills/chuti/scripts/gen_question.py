@@ -14,6 +14,9 @@ if str(PROJECT_ROOT) not in sys.path:
 from pydantic import TypeAdapter
 
 from shared.schemas.question import DifficultyLevel, Question, QuestionType
+from shared.schemas.research import ResearchDossier
+from shared.schemas.template import TemplateProfile, TemplateSectionProfile
+from shared.tools.sources import render_sources_markdown
 
 
 SUPPORTED_SUBJECTS = {"数学", "语文", "英语"}
@@ -29,6 +32,12 @@ class QuestionRequest:
     count: int = 1
     grade: str | None = None
     score: float = 1.0
+    source_ids: list[str] | None = None
+    source_basis: list[str] | None = None
+    difficulty_reason: str | None = None
+    exam_style_id: str | None = None
+    review_notes: list[str] | None = None
+    local_fallback: bool = False
 
 
 def parse_enum_value(
@@ -61,6 +70,54 @@ def generate_questions(request: QuestionRequest) -> list[Question]:
     return [_build_question(request, index + 1) for index in range(request.count)]
 
 
+def build_request_from_inputs(
+    *,
+    subject: str,
+    knowledge_points: list[str],
+    question_type: str,
+    difficulty: str,
+    count: int | None,
+    grade: str | None,
+    score: float | None,
+    research: ResearchDossier | None = None,
+    profile: TemplateProfile | None = None,
+) -> QuestionRequest:
+    section = _select_profile_section(profile=profile, question_type=question_type)
+    resolved_subject = subject or (research.subject if research else "") or (profile.subject if profile else "")
+    resolved_grade = grade or (research.grade if research else None)
+    resolved_points = knowledge_points or _knowledge_points_from_research(research)
+    resolved_question_type = question_type or (section.question_type if section else "")
+    resolved_difficulty = difficulty or _dominant_difficulty(section) or DifficultyLevel.MEDIUM.value
+    resolved_count = count if count is not None else (section.item_count if section and section.item_count else 1)
+    resolved_score = score if score is not None else (
+        section.score_per_item if section and section.score_per_item else 1.0
+    )
+    if not resolved_subject:
+        raise ValueError("subject 不能为空；可显式传入，或通过 --research-dossier / --profile 推断")
+    if not resolved_question_type:
+        raise ValueError("question_type 不能为空；可显式传入，或通过 --profile 推断")
+    source_ids = [source.id for source in research.sources] if research else []
+    source_basis = list(research.key_findings) if research else []
+    review_notes = list(research.teacher_review_notes) if research else []
+    if research:
+        review_notes.extend(source.review_note for source in research.sources if source.review_note)
+    return QuestionRequest(
+        subject=resolved_subject,
+        knowledge_points=resolved_points,
+        question_type=parse_enum_value(QuestionType, resolved_question_type),
+        difficulty=parse_enum_value(DifficultyLevel, resolved_difficulty),
+        count=resolved_count,
+        grade=resolved_grade,
+        score=resolved_score,
+        source_ids=source_ids,
+        source_basis=source_basis,
+        difficulty_reason=_difficulty_reason_from_profile(section=section, difficulty=resolved_difficulty),
+        exam_style_id=profile.id if profile else None,
+        review_notes=review_notes,
+        local_fallback=research.local_fallback if research else False,
+    )
+
+
 def questions_to_json(questions: list[Question]) -> str:
     return TypeAdapter(list[Question]).dump_json(questions, indent=2).decode("utf-8")
 
@@ -68,6 +125,17 @@ def questions_to_json(questions: list[Question]) -> str:
 def _build_question(request: QuestionRequest, number: int) -> Question:
     builder = _subject_builder(request.subject)
     fields = builder(request, number)
+    metadata = dict(fields.pop("metadata", {}))
+    metadata.update(
+        {
+            "source_ids": request.source_ids or [],
+            "source_basis": request.source_basis or [],
+            "difficulty_reason": request.difficulty_reason or _default_difficulty_reason(request.difficulty),
+            "exam_style_id": request.exam_style_id,
+            "teacher_review_notes": request.review_notes or [],
+            "local_fallback": request.local_fallback,
+        }
+    )
     return Question(
         id=f"q_{uuid.uuid4().hex[:12]}",
         subject=request.subject,
@@ -75,6 +143,8 @@ def _build_question(request: QuestionRequest, number: int) -> Question:
         difficulty=request.difficulty,
         knowledge_points=request.knowledge_points,
         score=request.score,
+        source="ResearchDossier" if request.source_ids else "TeacherSkills local template",
+        metadata=metadata,
         **fields,
     )
 
@@ -234,13 +304,16 @@ def _build_english_question(request: QuestionRequest, number: int) -> dict[str, 
 
 def build_arg_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="生成符合 Question schema 的本地模板题。")
-    parser.add_argument("--subject", required=True, help="学科：数学、语文、英语")
-    parser.add_argument("--knowledge-points", required=True, help="逗号分隔的知识点 ID 或名称")
-    parser.add_argument("--question-type", required=True, help="题型，如：选择题、阅读理解、计算题")
-    parser.add_argument("--difficulty", required=True, help="难度：易、中、难")
-    parser.add_argument("--count", type=int, default=1, help="生成数量，默认 1")
+    parser.add_argument("--subject", default="", help="学科：数学、语文、英语；可由 --research-dossier 或 --profile 推断")
+    parser.add_argument("--knowledge-points", default="", help="逗号分隔的知识点 ID 或名称；可由 --research-dossier 推断")
+    parser.add_argument("--question-type", default="", help="题型，如：选择题、阅读理解、计算题；可由 --profile 推断")
+    parser.add_argument("--difficulty", default="", help="难度：易、中、难；可由 --profile 推断")
+    parser.add_argument("--count", type=int, default=None, help="生成数量；可由 --profile 推断")
     parser.add_argument("--grade", default=None, help="年级，可选")
-    parser.add_argument("--score", type=float, default=1.0, help="每题分值，默认 1")
+    parser.add_argument("--score", type=float, default=None, help="每题分值；可由 --profile 推断")
+    parser.add_argument("--research-dossier", type=Path, default=None, help="ResearchDossier JSON 资料包")
+    parser.add_argument("--profile", type=Path, default=None, help="TemplateProfile JSON 考试样式文件")
+    parser.add_argument("--output-dir", type=Path, default=None, help="输出题目包目录，包含 questions.json、sources.md、package.json")
     parser.add_argument("--output", type=Path, default=None, help="输出 JSON 文件路径；不传则写到 stdout")
     return parser
 
@@ -249,26 +322,92 @@ def main(argv: list[str] | None = None) -> int:
     parser = build_arg_parser()
     args = parser.parse_args(argv)
     try:
-        request = QuestionRequest(
+        research = (
+            ResearchDossier.model_validate_json(args.research_dossier.read_text(encoding="utf-8"))
+            if args.research_dossier
+            else None
+        )
+        profile = TemplateProfile.model_validate_json(args.profile.read_text(encoding="utf-8")) if args.profile else None
+        request = build_request_from_inputs(
             subject=args.subject,
             knowledge_points=parse_knowledge_points(args.knowledge_points),
-            question_type=parse_enum_value(QuestionType, args.question_type),
-            difficulty=parse_enum_value(DifficultyLevel, args.difficulty),
+            question_type=args.question_type,
+            difficulty=args.difficulty,
             count=args.count,
             grade=args.grade,
             score=args.score,
+            research=research,
+            profile=profile,
         )
-        output = questions_to_json(generate_questions(request))
-    except ValueError as exc:
+        questions = generate_questions(request)
+        output = questions_to_json(questions)
+    except (OSError, ValueError) as exc:
         sys.stderr.write(f"{exc}\n")
         return 2
 
+    if args.output_dir:
+        args.output_dir.mkdir(parents=True, exist_ok=True)
+        (args.output_dir / "questions.json").write_text(output + "\n", encoding="utf-8")
+        if research:
+            (args.output_dir / "sources.md").write_text(render_sources_markdown(research), encoding="utf-8")
+        package = {
+            "files": {
+                "questions_json": "questions.json",
+                "sources_md": "sources.md" if research else None,
+            },
+            "checks": {
+                "question_count_matches": len(questions) == request.count,
+                "all_questions_have_source_metadata": all(question.metadata.get("source_ids") is not None for question in questions),
+                "profile_applied": bool(request.exam_style_id),
+            },
+            "source_ids": request.source_ids or [],
+            "exam_style_id": request.exam_style_id,
+        }
+        (args.output_dir / "package.json").write_text(TypeAdapter(dict).dump_json(package, indent=2).decode("utf-8") + "\n", encoding="utf-8")
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(output + "\n", encoding="utf-8")
-    else:
+    elif not args.output_dir:
         sys.stdout.write(output + "\n")
     return 0
+
+
+def _select_profile_section(*, profile: TemplateProfile | None, question_type: str) -> TemplateSectionProfile | None:
+    if not profile:
+        return None
+    sections = [section for section in profile.sections if section.question_type]
+    if question_type:
+        for section in sections:
+            if section.question_type == question_type:
+                return section
+    return sections[0] if sections else None
+
+
+def _dominant_difficulty(section: TemplateSectionProfile | None) -> str | None:
+    if not section or not section.difficulty_ratio:
+        return None
+    return max(section.difficulty_ratio.items(), key=lambda item: item[1])[0]
+
+
+def _knowledge_points_from_research(research: ResearchDossier | None) -> list[str]:
+    if not research:
+        return []
+    if research.subject == "数学" and "二次函数" in research.topic:
+        return ["math_quad_graph", "math_quad_vertex"]
+    return [research.topic]
+
+
+def _difficulty_reason_from_profile(*, section: TemplateSectionProfile | None, difficulty: str) -> str:
+    if not section:
+        return _default_difficulty_reason(parse_enum_value(DifficultyLevel, difficulty))
+    ratio = section.difficulty_ratio.get(difficulty)
+    if ratio is None:
+        return f"难度按考试样式 {section.title} 的题型要求生成。"
+    return f"难度按考试样式 {section.title} 的 {difficulty} 档生成，该档比例为 {ratio:g}。"
+
+
+def _default_difficulty_reason(difficulty: DifficultyLevel) -> str:
+    return f"难度标记为{difficulty.value}，需教师结合班级学情复核。"
 
 
 if __name__ == "__main__":

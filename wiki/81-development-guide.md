@@ -93,6 +93,16 @@ python skills/gaijuan/scripts/score_report.py \
   --output score_report.md
 ```
 
+### Stage E 专业批改包
+
+```bash
+python skills/gaijuan/scripts/build_grading_package.py \
+  --exam examples_output/exam_package/exam.json \
+  --answers examples/sample_data/sample_math_student_answers.json \
+  --research examples/sample_data/research_dossier_math_exam.json \
+  --output-dir grading_package
+```
+
 如需主观题远程评分，设置：
 
 ```bash
@@ -111,6 +121,17 @@ python skills/xueqing/scripts/analyze_learning.py \
   --output-report learning_report.md \
   --chart-dir charts \
   --offline
+```
+
+### Stage E 专业学情包
+
+```bash
+python skills/xueqing/scripts/build_learning_package.py \
+  --responses examples/sample_data/sample_student_responses.json \
+  --knowledge-points examples/sample_data/math_knowledge_points.json \
+  --questions examples/sample_data/sample_questions.json \
+  --research examples/sample_data/research_dossier_math_exam.json \
+  --output-dir learning_package
 ```
 
 ### Phase 3 备课
@@ -169,6 +190,18 @@ python skills/pingyu/scripts/generate_comment.py \
   --output-markdown student_comments.md
 ```
 
+### Stage E 专业评语包
+
+```bash
+python skills/pingyu/scripts/build_comment_package.py \
+  --responses examples/sample_data/sample_student_responses.json \
+  --mastery examples/sample_data/sample_knowledge_mastery.json \
+  --knowledge-points examples/sample_data/math_knowledge_points.json \
+  --observations examples/sample_data/sample_teacher_observations.json \
+  --research examples/sample_data/research_dossier_math_beike.json \
+  --output-dir comment_package
+```
+
 ### Phase 4 MCP Server
 
 ```bash
@@ -205,10 +238,13 @@ MCP 客户端配置可参考 `examples/mcp_config.json`。
 - `examples/demo_zujuan.md`：只演示组卷
 - `examples/demo_full_workflow.md`：串联出题和组卷
 - `examples/demo_xueqing.md`：演示学情分析
+- `examples/demo_xueqing_professional.md`：演示 Stage E 专业学情包
 - `examples/demo_beike.md`：演示备课分析
 - `examples/demo_beike_professional.md`：演示 Stage E 专业备课包
 - `examples/demo_jiaoan.md`：演示标准教案输出
 - `examples/demo_pingyu.md`：演示批量评语输出
+- `examples/demo_gaijuan_professional.md`：演示 Stage E 专业批改包
+- `examples/demo_pingyu_professional.md`：演示 Stage E 专业评语包
 
 ## 测试说明
 
@@ -222,6 +258,7 @@ MCP 客户端配置可参考 `examples/mcp_config.json`。
   - `tests/test_beike.py`：备课分析解析、匹配、报告与 CLI
   - `tests/test_jiaoan.py`：教案生成、模板渲染与 CLI
   - `tests/test_lesson_package.py`：专业备课包文件输出、上下文、来源和 DOCX 字体校验
+  - `tests/test_stage_e_packages.py`：专业批改包、学情包、评语包输出与来源校验
   - `tests/test_pingyu.py`：评语生成、个性化差异与 CLI
   - `tests/test_mcp_server.py`：MCP initialize、tools/list、tools/call 与 stdio 交互
   - `tests/test_learning_analysis.py`：学情分析成功路径、报告生成与图表依赖降级

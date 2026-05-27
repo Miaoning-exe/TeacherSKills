@@ -242,11 +242,127 @@ python skills\beike\scripts\build_lesson_package.py `
 
 | Skill | 升级方向 |
 |-------|----------|
-| `chuti` | 基于资料包和考试样式生成题目，记录题目来源依据、考查点、难度理由和答案解析。 |
-| `gaijuan` | 输出评分细则、批改报告、错因标签和主观题待复核清单。 |
-| `xueqing` | 输出班级学情报告、学生个人诊断报告、补救练习建议和知识点热力图。 |
-| `pingyu` | 区分班主任评语、学科评语、阶段性反馈，降低同质化重复。 |
-| `mcp_server` | 暴露资料包、模板 profile、文档包生成等新工具。 |
+| `chuti` | ✅ 已支持基于 `ResearchDossier` 资料包和 `TemplateProfile` 考试样式生成题目包，并在题目 `metadata` 中记录来源依据、考查点、难度理由、考试样式和教师复核提示。 |
+| `gaijuan` | ✅ 已支持正式批改包，输出批改报告、结构化批改结果、主观题待复核清单和来源清单。 |
+| `xueqing` | ✅ 已支持正式学情包，输出班级学情报告、学生个人诊断报告、补救练习建议、掌握度 JSON 和来源清单。 |
+| `pingyu` | ✅ 已支持正式评语包，输出学生评语 DOCX/Markdown/JSON、评语复核清单和来源清单。 |
+| `mcp_server` | TODO | 本轮不改 MCP 工具暴露，后续再统一接入资料包、模板 profile 和文档包生成入口。 |
+
+### E4.1 出题规范化
+
+这里的“资料包”指 `ResearchDossier` JSON，例如：
+
+```text
+examples\sample_data\research_dossier_math_exam.json
+```
+
+这里的“考试样式”指 `TemplateProfile` JSON，例如：
+
+```text
+skills\zujuan\assets\profiles\math_junior_standard.json
+```
+
+`ResearchDossier` 提供课标、样卷、评分要求等来源依据；`TemplateProfile` 提供题型、题量、分值和难度结构。`chuti` 消费这两个结构化输入并生成可校验的 `Question[]`。
+
+本节的主要作用是, 让题目在生成阶段就带上资料依据、考试样式、难度理由和复核提示，避免 `questions.json` 成为没有来源链的裸题；然后 `zujuan` 再消费同样的 `ResearchDossier` 和 `TemplateProfile`，做整份试卷层面的组装与一致性校验。
+
+可直接运行命令：
+
+```powershell
+python skills\chuti\scripts\gen_question.py `
+  --research-dossier examples\sample_data\research_dossier_math_exam.json `
+  --profile skills\zujuan\assets\profiles\math_junior_standard.json `
+  --output-dir examples_output\question_package
+```
+
+输出目录：
+
+```text
+question_package/
+  questions.json
+  sources.md
+  package.json
+```
+
+### E4.2 批改规范化
+
+`gaijuan` 第一版正式包继续复用现有 `ExamPaper` 和学生作答 JSON。资料依据来自 `ResearchDossier`，主观题在离线或远程评分不可用时进入教师待复核清单。
+
+运行前先按 E2 生成 `examples_output\exam_package\exam.json`，再运行：
+
+```powershell
+python skills\gaijuan\scripts\build_grading_package.py `
+  --exam examples_output\exam_package\exam.json `
+  --answers examples\sample_data\sample_math_student_answers.json `
+  --research examples\sample_data\research_dossier_math_exam.json `
+  --output-dir examples_output\grading_package
+```
+
+输出目录：
+
+```text
+grading_package/
+  批改报告.docx
+  graded_responses.json
+  score_report.md
+  主观题待复核清单.json
+  package.json
+  sources.md
+```
+
+### E4.3 学情规范化
+
+`xueqing` 第一版正式包消费 `StudentResponse[]`、`KnowledgePoint[]`、可选 `Question[]` 和 `ResearchDossier`。脚本输出班级报告、学生个人诊断和补救练习建议，保留 `mastery.json` 和 `remediation_plan.json` 作为结构化数据。
+
+```powershell
+python skills\xueqing\scripts\build_learning_package.py `
+  --responses examples\sample_data\sample_student_responses.json `
+  --knowledge-points examples\sample_data\math_knowledge_points.json `
+  --questions examples\sample_data\sample_questions.json `
+  --research examples\sample_data\research_dossier_math_exam.json `
+  --output-dir examples_output\learning_package
+```
+
+输出目录：
+
+```text
+learning_package/
+  班级学情报告.docx
+  学生个人诊断报告.docx
+  补救练习建议.docx
+  mastery.json
+  learning_report.md
+  remediation_plan.json
+  package.json
+  sources.md
+```
+
+### E4.4 评语规范化
+
+`pingyu` 第一版正式包消费批改结果、掌握度、知识点、教师观察和可选资料包。输出时区分可提交评语和教师复核清单，避免把数据推断直接当作最终评价。
+
+```powershell
+python skills\pingyu\scripts\build_comment_package.py `
+  --responses examples\sample_data\sample_student_responses.json `
+  --mastery examples\sample_data\sample_knowledge_mastery.json `
+  --knowledge-points examples\sample_data\math_knowledge_points.json `
+  --observations examples\sample_data\sample_teacher_observations.json `
+  --research examples\sample_data\research_dossier_math_beike.json `
+  --term 期末 `
+  --output-dir examples_output\comment_package
+```
+
+输出目录：
+
+```text
+comment_package/
+  学生评语.docx
+  student_comments.json
+  student_comments.md
+  评语复核清单.json
+  package.json
+  sources.md
+```
 
 ## E5: 验收标准
 
@@ -293,3 +409,4 @@ Stage E 不以“脚本能跑”为完成标准，而以教师可用性为标准
 
 ## 遗留项
 - exam_package 暂时只支持数学, 不支持语文英语
+- mcp_server 暂未接入 Stage E 新增的出题包、试卷包、备课包、批改包、学情包和评语包入口。

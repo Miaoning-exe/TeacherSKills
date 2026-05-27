@@ -15,6 +15,8 @@ from pydantic import TypeAdapter, ValidationError
 from shared.schemas.comment import StudentComment, TeacherObservation
 from shared.schemas.knowledge import KnowledgePoint
 from shared.schemas.student import KnowledgeMastery, StudentResponse
+from shared.schemas.template import TemplateFormattingProfile
+from shared.tools.docx_renderer import apply_cjk_formatting
 
 
 STUDENT_RESPONSE_ADAPTER = TypeAdapter(list[StudentResponse])
@@ -210,6 +212,7 @@ def export_docx(comments: list[StudentComment], output_path: Path, *, term: str)
         document.add_heading(f"{display_name}（{comment.student_id}）", level=2)
         document.add_paragraph(comment.comment)
 
+    apply_cjk_formatting(document, TemplateFormattingProfile())
     output_path.parent.mkdir(parents=True, exist_ok=True)
     document.save(output_path)
 
